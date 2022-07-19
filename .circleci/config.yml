@@ -150,11 +150,10 @@ jobs:
     docker:
       - image: python:3.7-alpine3.11
     steps:
-      - checkout
       - add_ssh_keys:
           fingerprints: ["f6:05:d3:8b:58:fb:56:f0:78:01:7d:74:18:66:aa:17"]
       - attach_workspace:
-          at: .circleci/ansible/
+          at: project/.circleci/ansible/
       - run:
           name: Install Ansible
           command: |
@@ -162,7 +161,7 @@ jobs:
       - run:
           name: run ansible tasks
           command: |
-            cd .circleci/ansible/
+            cd project/.circleci/ansible/
             ansible-playbook -i inventory.txt configure-server.yml
 workflows:
   default:
