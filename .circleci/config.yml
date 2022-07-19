@@ -161,6 +161,7 @@ jobs:
       - run:
           name: run ansible tasks
           command: |
+            cd project/.circleci/ansible/
             ls -a
     # ansible-playbook -i inventory.txt configure-server.yml
 workflows:
