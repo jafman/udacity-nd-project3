@@ -140,16 +140,36 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/*
       - destroy-environment:
           stack: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
       - destroy-environment:
           stack: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
-              
+
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints: ["f6:05:d3:8b:58:fb:56:f0:78:01:7d:74:18:66:aa:17"]
+      - attach_workspace:
+          at: project/.circleci/ansible/
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - run:
+          name: run ansible tasks
+          command: |
+            cd project/.circleci/ansible/
+            ansible-playbook -i inventory.txt configure-server.yml
 workflows:
   default:
     jobs:
       - deploy-infrastructure
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       # - build-frontend
       # - build-backend
       # - test-frontend:
