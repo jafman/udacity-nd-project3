@@ -151,10 +151,15 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      - run:
+          name: copy files from github
+          command: |
+            mkdir -p ~/tmp/backup
+            cat .circleci/ansible/inventory.txt > ~/tmp/backup/inv.txt
       - persist_to_workspace:
           root: ~/
           paths:
-            - project/.circleci/ansible/*
+            - tmp/backup/*
 
   configure-infrastructure:
     docker:
@@ -171,7 +176,7 @@ jobs:
       - run:
           name: run ansible tasks
           command: |
-            cd project/.circleci/ansible
+            cd ~/tmp/backup/
             ls -a
     # ansible-playbook -i inventory.txt configure-server.yml
 workflows:
