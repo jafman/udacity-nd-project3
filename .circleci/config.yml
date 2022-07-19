@@ -177,7 +177,7 @@ jobs:
           name: run ansible tasks
           command: |
             cd ~/tmp/backup/
-            ls -a
+            cat inv.txt
     # ansible-playbook -i inventory.txt configure-server.yml
 workflows:
   default:
