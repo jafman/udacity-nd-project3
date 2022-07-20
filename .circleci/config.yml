@@ -197,11 +197,8 @@ jobs:
           command: |
             cd ~/tmp/backup/
             cat inventory.txt
-            ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment:
-          stack: "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
-      - destroy-environment:
-          stack: "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            ansible-playbook -i inventory.txt configure-server.yaml
+            
 workflows:
   default:
     jobs:
