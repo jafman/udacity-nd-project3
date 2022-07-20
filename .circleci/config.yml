@@ -130,18 +130,22 @@ jobs:
               --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
               --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}" \
               --tags project=udapeople:frontend
+      
+      - run:
+          name: prepare files to be persisted to workspace
+          command: |
+            mkdir -p ~/tmp/backup
+            cp -r .circleci/ansible/. ~/tmp/backup/
+      
       - run:
           name: add backend-ip to ansible inventory
           command: |
             aws ec2 describe-instances \
               --filters Name=tag:Project,Values=udapeople:backend \
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text >> .circleci/ansible/inventory.txt
-      - run:
-          name: prepare files to be persisted to workspace
-          command: |
-            mkdir -p ~/tmp/backup
-            cp -r .circleci/ansible/. ~/tmp/backup/
+              --output text >> ~/tmp/backup/inventory.txt
+            cat ~/tmp/backup/inventory.txt
+
       - persist_to_workspace:
           root: ~/
           paths:
