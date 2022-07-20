@@ -199,7 +199,6 @@ jobs:
             ls
             cat inventory.txt
             ansible-playbook -i inventory.txt configure-server.yaml
-
 workflows:
   default:
     jobs:
