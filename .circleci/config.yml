@@ -155,7 +155,8 @@ jobs:
           name: copy files from github
           command: |
             mkdir -p ~/tmp/backup
-            cat .circleci/ansible/inventory.txt > ~/tmp/backup/inv.txt
+            cp -r .circleci/ansible/. ~/tmp/backup/
+    # cat .circleci/ansible/inventory.txt > ~/tmp/backup/inv.txt
       - persist_to_workspace:
           root: ~/
           paths:
@@ -177,7 +178,7 @@ jobs:
           name: run ansible tasks
           command: |
             cd ~/tmp/backup/
-            cat inv.txt
+            ls
     # ansible-playbook -i inventory.txt configure-server.yml
 workflows:
   default:
