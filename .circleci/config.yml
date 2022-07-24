@@ -286,6 +286,13 @@ jobs:
             npm run build
             cd ..
             tar -C backend -czvf artifact.tar.gz .
+            mkdir -p ~/tmp/artifacts
+            cp artifact.tar.gz ~/tmp/artifacts/
+      - store_artifacts:
+          path: ~/tmp/artifacts
+      - run:
+          name: Run Ansible Playbook
+          command: |
             cd ~/tmp/backup/
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
@@ -326,16 +333,18 @@ jobs:
 workflows:
   default:
     jobs:
-      - test-artifacts
-      - download-artifacts:
-          requires: [test-artifacts]
-      # - deploy-infrastructure
-      # - configure-infrastructure:
-      #     requires: [deploy-infrastructure]
+      # - test-artifacts
+      # - download-artifacts:
+      #     requires: [test-artifacts]
+      - deploy-infrastructure
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
       # - run-migrations:
       #     requires: [configure-infrastructure]
-      # - deploy-frontend:
-      #     requires: [run-migrations]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [deploy-frontend]
 
       # - build-frontend
       # - build-backend
