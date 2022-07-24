@@ -274,7 +274,7 @@ jobs:
           name: Install Node.js & other dependencies
           command: |
             apk add tar
-            apk add --update nodejs npm
+            apk add --update nodejs=13.8.0 npm
             node -e "console.log('Running Node.js ' + process.version)"
             npm -v
 workflows:
