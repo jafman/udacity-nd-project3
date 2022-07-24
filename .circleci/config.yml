@@ -278,10 +278,35 @@ jobs:
             apk add --update nodejs npm
             node -e "console.log('Running Node.js ' + process.version)"
             npm -v
+      - run:
+          name: deploy backend objects
+          command: |
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            tar -C backend -czvf artifact.tar.gz .
+            cd ~/tmp/backup/
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
+
+  test-artifacts:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run:
+          name: Creating Dummy Artifacts
+          command: |
+            echo "my artifact file" > ~/tmp/artifact-1;
+
+      - store_artifacts:
+          path: /tmp/artifact-1
+          # destination: artifact-file       
 workflows:
   default:
     jobs:
-      - deploy-backend
+      - test-artifacts
       # - deploy-infrastructure
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
