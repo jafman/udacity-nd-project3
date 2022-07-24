@@ -305,11 +305,29 @@ jobs:
 
       - store_artifacts:
           path: ~/tmp/artifacts
-          # destination: artifact-file       
+          # destination: artifact-file
+  download-artifacts:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - run:
+          name: Download Artifacts
+          command: |
+            echo "Token: $CI_TOKEN"
+            cd ~/tmp
+            mkdir downloads
+            cd downloads
+            curl -H "Circle-Token: $CI_TOKEN" https://circleci.com/api/v1.1/project/github/jafman/udacity-nd-project3/latest/artifacts \
+            | grep -o 'https://[^"]*' \
+            | wget --verbose --header "Circle-Token: $CIRCLE_TOKEN" --input-file -
+            ls
+
 workflows:
   default:
     jobs:
       - test-artifacts
+      - download-artifacts:
+          requires: [test-artifacts]
       # - deploy-infrastructure
       # - configure-infrastructure:
       #     requires: [deploy-infrastructure]
