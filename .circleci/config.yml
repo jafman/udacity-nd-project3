@@ -321,6 +321,7 @@ jobs:
             | grep -o 'https://[^"]*' \
             | wget --verbose --header "Circle-Token: $CIRCLE_TOKEN" --input-file -
             ls
+            cat artifact-1
 
 workflows:
   default:
