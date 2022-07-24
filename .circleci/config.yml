@@ -313,6 +313,7 @@ jobs:
       - run:
           name: Download Artifacts
           command: |
+            yum -y install wget
             echo "Token: $CI_TOKEN"
             mkdir downloads
             cd downloads
