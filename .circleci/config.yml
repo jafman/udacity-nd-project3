@@ -203,8 +203,6 @@ jobs:
       - image: circleci/node:14.18.0
     steps:
       - checkout
-      - restore_cache:
-          keys: [build-backend]
       - run:
           name: Run Migrations
           command: |
@@ -263,13 +261,14 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-infrastructure
-      - configure-infrastructure:
-          requires: [deploy-infrastructure]
-      - run-migrations:
-          requires: [configure-infrastructure]
-      - deploy-frontend:
-          requires: [run-migrations]
+      - run-migrations
+      # - deploy-infrastructure
+      # - configure-infrastructure:
+      #     requires: [deploy-infrastructure]
+      # - run-migrations:
+      #     requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #     requires: [run-migrations]
 
       # - build-frontend
       # - build-backend
