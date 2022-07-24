@@ -200,7 +200,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: circleci/node:14.18.0
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
@@ -215,7 +215,7 @@ jobs:
             cat ~/project/backend/migrations_dump.txt
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl https://kvdb.io/ELHy62f4JrtMqheL4muLVN/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+              curl -k https://kvdb.io/ELHy62f4JrtMqheL4muLVN/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             fi
   
   deploy-frontend:
