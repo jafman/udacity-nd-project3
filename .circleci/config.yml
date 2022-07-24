@@ -314,7 +314,6 @@ jobs:
           name: Download Artifacts
           command: |
             echo "Token: $CI_TOKEN"
-            cd ~/tmp
             mkdir downloads
             cd downloads
             curl -H "Circle-Token: $CI_TOKEN" https://circleci.com/api/v1.1/project/github/jafman/udacity-nd-project3/latest/artifacts \
